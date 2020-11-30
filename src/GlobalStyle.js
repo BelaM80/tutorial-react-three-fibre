@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background: #f1f4f8;
-    position: fixed;
+    position: fixed
   }
 `;
 
