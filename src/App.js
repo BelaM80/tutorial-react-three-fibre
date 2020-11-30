@@ -1,27 +1,51 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from 'react-three-fiber';
-//
+import PropTypes from 'prop-types';
 import GlobalStyle from './GlobalStyle';
 
-const Box = () => {
-  /* eslint-disable no-return-assign */
-  /* eslint-disable no-multi-assign */
+const SpinningMesh = ({ position, args, color }) => {
   const mesh = useRef(null);
-  useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
+  useFrame(() => {
+    mesh.current.rotation.x += 0.01;
+    mesh.current.rotation.y += 0.01;
+  });
   return (
-    <mesh ref={mesh}>
-      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" />
+    <mesh position={position} ref={mesh}>
+      <boxBufferGeometry attach="geometry" args={args} />
+      <meshStandardMaterial attach="material" color={color} />
     </mesh>
   );
+};
+SpinningMesh.propTypes = {
+  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  args: PropTypes.arrayOf(PropTypes.number).isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <Canvas>
-        <Box />
+      <Canvas colorManagement camera={{ position: [-5, 2, 10], fov: 60 }}>
+        <ambientLight intensity={0.3} />
+        <directionalLight
+          position={[0, 10, 0]}
+          intensity={1.5}
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+          shadow-camera-far={50}
+          shadow-camera-left={-10}
+          shadow-camera-right={10}
+          shadow-camera-top={10}
+          shadow-camera-bottom={-10}
+        />
+
+        <pointLight position={[-10, 0, -20]} intensity={0.5} />
+        <pointLight position={[0, -10, 0]} intensity={1.5} />
+
+        <SpinningMesh position={[0, 1, 0]} args={[3, 2, 1]} color="lightblue" />
+        <SpinningMesh position={[-2, 1, -5]} color="pink" />
+        <SpinningMesh position={[5, 1, -2]} color="pink" />
       </Canvas>
     </>
   );
