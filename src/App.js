@@ -1,68 +1,28 @@
-import styled, { keyframes } from 'styled-components/macro';
-
+import React, { useRef } from 'react';
+import { Canvas, useFrame } from 'react-three-fiber';
+//
 import GlobalStyle from './GlobalStyle';
-import logo from './logo.svg';
 
-const logoSpin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const Wrapper = styled.div`
-  text-align: center;
-
-  header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-
-  header img {
-    height: 40vmin;
-    pointer-events: none;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    header img {
-      animation: ${logoSpin} infinite 20s linear;
-    }
-  }
-`;
-
-const Link = styled.a`
-  color: #61dafb;
-`;
+const Box = () => {
+  /* eslint-disable no-return-assign */
+  /* eslint-disable no-multi-assign */
+  const mesh = useRef(null);
+  useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
+  return (
+    <mesh ref={mesh}>
+      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+      <meshStandardMaterial attach="material" />
+    </mesh>
+  );
+};
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <Wrapper>
-        <header>
-          <img src={logo} alt="logo" />
-          <p>
-            Edit
-            <code>src/App.js</code>
-            and save to reload.
-          </p>
-          <Link
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </Link>
-        </header>
-      </Wrapper>
+      <Canvas>
+        <Box />
+      </Canvas>
     </>
   );
 }
