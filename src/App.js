@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components/macro';
+
 import GlobalStyle from './GlobalStyle';
 import logo from './logo.svg';
 
